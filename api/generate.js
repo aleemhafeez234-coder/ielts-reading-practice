@@ -37,7 +37,7 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
 
   try {
     const apiKey = process.env.GEMINI_API_KEY;
-    const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+    const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
 
     const response = await fetch(url, {
       method: "POST",
@@ -47,7 +47,7 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
       },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+        generationConfig: { temperature: 0.7, maxOutputTokens: 8192 },
       }),
     });
 
