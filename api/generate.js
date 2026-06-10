@@ -21,15 +21,15 @@ Return ONLY a valid JSON object with this exact structure (no markdown, no expla
   ],
   "questions": [
     {"id":"q1","skill":"skimming","type":"mcq","question":"What is the main idea of the passage?","options":["A","B","C","D"],"answer":"B","explanation":"..."},
-    {"id":"q2","skill":"skimming","type":"mcq","question":"What is the author's overall purpose?","options":["A","B","C","D"],"answer":"A","explanation":"..."},
+    {"id":"q2","skill":"skimming","type":"mcq","question":"What is the author overall purpose?","options":["A","B","C","D"],"answer":"A","explanation":"..."},
     {"id":"q3","skill":"skimming","type":"tfng","question":"General theme statement","options":["True","False","Not Given"],"answer":"True","explanation":"..."},
-    {"id":"q4","skill":"scanning","type":"short_answer","question":"According to the passage, what specific fact/number is mentioned?","answer":"short answer","explanation":"Found in paragraph B: ..."},
-    {"id":"q5","skill":"scanning","type":"short_answer","question":"In which paragraph is [specific detail] discussed?","answer":"Paragraph C","explanation":"..."},
+    {"id":"q4","skill":"scanning","type":"short_answer","question":"According to the passage, what specific fact or number is mentioned?","answer":"short answer","explanation":"Found in paragraph B: ..."},
+    {"id":"q5","skill":"scanning","type":"short_answer","question":"In which paragraph is a specific detail discussed?","answer":"Paragraph C","explanation":"..."},
     {"id":"q6","skill":"scanning","type":"mcq","question":"Which specific detail is mentioned in the passage?","options":["A","B","C","D"],"answer":"C","explanation":"..."},
-    {"id":"q7","skill":"detailed","type":"mcq","question":"Based on paragraph X, what can be inferred about...?","options":["A","B","C","D"],"answer":"D","explanation":"..."},
+    {"id":"q7","skill":"detailed","type":"mcq","question":"Based on paragraph X, what can be inferred?","options":["A","B","C","D"],"answer":"D","explanation":"..."},
     {"id":"q8","skill":"detailed","type":"tfng","question":"Precise statement requiring careful reading","options":["True","False","Not Given"],"answer":"False","explanation":"..."},
-    {"id":"q9","skill":"detailed","type":"mcq","question":"The word/phrase in paragraph X most closely means...","options":["A","B","C","D"],"answer":"B","explanation":"..."},
-    {"id":"q10","skill":"detailed","type":"short_answer","question":"According to paragraph X, why/how does [detail] happen?","answer":"concise answer","explanation":"..."}
+    {"id":"q9","skill":"detailed","type":"mcq","question":"The word in paragraph X most closely means...","options":["A","B","C","D"],"answer":"B","explanation":"..."},
+    {"id":"q10","skill":"detailed","type":"short_answer","question":"According to paragraph X, why does a detail happen?","answer":"concise answer","explanation":"..."}
   ]
 }
 
@@ -37,7 +37,7 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
 
   try {
     const apiKey = process.env.GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent`;
+    const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
 
     const response = await fetch(url, {
       method: "POST",
@@ -55,7 +55,7 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
 
     if (!response.ok) {
       console.error("Gemini error:", JSON.stringify(data));
-      return res.status(500).json({ error: "AI generation failed" });
+      return res.status(500).json({ error: "AI generation failed: " + JSON.stringify(data) });
     }
 
     let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
@@ -65,6 +65,6 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
     res.status(200).json(parsed);
   } catch (err) {
     console.error("Server error:", err.message);
-    res.status(500).json({ error: "Something went wrong. Please try again." });
+    res.status(500).json({ error: "Server error: " + err.message });
   }
 }
