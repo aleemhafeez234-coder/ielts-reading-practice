@@ -37,10 +37,14 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
 
   try {
     const apiKey = process.env.GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-3-flash-preview:generateContent?key=${apiKey}
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent`;
+
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
@@ -50,7 +54,7 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Gemini error:", data);
+      console.error("Gemini error:", JSON.stringify(data));
       return res.status(500).json({ error: "AI generation failed" });
     }
 
@@ -60,7 +64,7 @@ Rules: Write 400-500 words total across 5 paragraphs. Make all questions answera
 
     res.status(200).json(parsed);
   } catch (err) {
-    console.error("Server error:", err);
+    console.error("Server error:", err.message);
     res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 }
